@@ -1,0 +1,7 @@
+message: This is a message defined in the configuration file config.yml.
+messageRepetitions: 3
+server:
+  type: simple
+  connector:
+    type: http
+    port: 6000

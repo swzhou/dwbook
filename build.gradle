@@ -58,5 +58,5 @@ jar {
 }
 
 run {
-    args 'server', './dwbook.yml'
+    args 'server', './config.yml'
 }
