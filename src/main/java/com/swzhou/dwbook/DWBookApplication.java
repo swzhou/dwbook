@@ -28,7 +28,7 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         }
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDatabase(), "mysql");
-        environment.jersey().register(new ContactResource(jdbi));
+        environment.jersey().register(new ContactResource(jdbi, environment.getValidator()));
     }
 
     public static void main(String[] args) throws Exception {

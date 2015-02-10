@@ -1,12 +1,25 @@
 package com.swzhou.dwbook.representations;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * Created by swzhou on 15/2/10.
  */
 public class Contact {
+
     private final int id;
+
+    @NotBlank
+    @Length(min = 2, max = 255)
     private final String firstName;
+
+    @NotBlank
+    @Length(min = 2, max = 255)
     private final String lastName;
+
+    @NotBlank
+    @Length(min = 2, max = 30)
     private final String phone;
 
     public Contact() {
