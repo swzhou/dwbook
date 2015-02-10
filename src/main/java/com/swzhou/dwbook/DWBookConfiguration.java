@@ -2,6 +2,9 @@ package com.swzhou.dwbook;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Max;
 
 /**
  * Created by swzhou on 15/2/10.
@@ -9,9 +12,11 @@ import io.dropwizard.Configuration;
 public class DWBookConfiguration extends Configuration {
 
     @JsonProperty
+    @NotEmpty
     private String message;
 
     @JsonProperty
+    @Max(10)
     private int messageRepetitions;
 
     public String getMessage() {

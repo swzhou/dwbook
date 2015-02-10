@@ -1,5 +1,6 @@
 package com.swzhou.dwbook;
 
+import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -23,6 +24,7 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         for (int i = 0; i < configuration.getMessageRepetitions(); i++) {
             System.out.println(configuration.getMessage());
         }
+        environment.jersey().register(new ContactResource());
     }
 
     public static void main(String[] args) throws Exception {
