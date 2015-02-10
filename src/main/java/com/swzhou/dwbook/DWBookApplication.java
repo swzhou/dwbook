@@ -2,8 +2,10 @@ package com.swzhou.dwbook;
 
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +26,9 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         for (int i = 0; i < configuration.getMessageRepetitions(); i++) {
             System.out.println(configuration.getMessage());
         }
-        environment.jersey().register(new ContactResource());
+        final DBIFactory factory = new DBIFactory();
+        final DBI jdbi = factory.build(environment, configuration.getDatabase(), "mysql");
+        environment.jersey().register(new ContactResource(jdbi));
     }
 
     public static void main(String[] args) throws Exception {
