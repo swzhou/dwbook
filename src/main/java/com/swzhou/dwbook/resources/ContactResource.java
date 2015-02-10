@@ -1,5 +1,7 @@
 package com.swzhou.dwbook.resources;
 
+import com.swzhou.dwbook.representations.Contact;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,12 +16,16 @@ public class ContactResource {
     @GET
     @Path("/{id}")
     public Response getContact(@PathParam("id") int id) {
-        return Response.ok("{contact_id: " + id + ", name: \"Dummy Name\", phone: \"0123456789\"}").build();
+        return Response
+                .ok(new Contact(id, "John", "Doe", "+123456789"))
+                .build();
     }
 
     @POST
-    public Response createContact(@FormParam("name") String name, @FormParam("phone") String phone) {
-        return Response.created(null).build();
+    public Response createContact(Contact contact) {
+        return Response
+                .created(null)
+                .build();
     }
 
     @DELETE
@@ -32,8 +38,9 @@ public class ContactResource {
     @Path("/{id}")
     public Response updateContact(
             @PathParam("id") int id,
-            @FormParam("name") String name,
-            @FormParam("phone") String phone) {
-        return Response.ok("{contact_id: " + id + ", name: " + name + ", phone: " + phone + "}").build();
+            Contact contact) {
+        return Response
+                .ok(new Contact(id, contact.getFirstName(), contact.getLastName(), contact.getPhone()))
+                .build();
     }
 }
