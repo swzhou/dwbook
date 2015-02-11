@@ -1,7 +1,5 @@
 message: This is a message defined in the configuration file config.yml.
 messageRepetitions: 3
-authUser: swzhou
-authPassword: secret
 server:
   applicationConnectors:
     - type: http

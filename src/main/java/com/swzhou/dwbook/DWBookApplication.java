@@ -2,6 +2,8 @@ package com.swzhou.dwbook;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.swzhou.dwbook.dao.UserDAO;
+import com.swzhou.dwbook.representations.User;
 import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
@@ -39,10 +41,10 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         final DBI jdbi = factory.build(environment, configuration.getDatabase(), "mysql");
         environment.jersey().register(new ContactResource(jdbi, environment.getValidator()));
         final Client client = new JerseyClientBuilder(environment).build("REST Client");
-        client.addFilter(new HTTPBasicAuthFilter(configuration.getAuthUser(), configuration.getAuthPassword()));
+        User user = jdbi.onDemand(UserDAO.class).findOneUser();
+        client.addFilter(new HTTPBasicAuthFilter(user.getUsername(), user.getPassword()));
         environment.jersey().register(new ClientResource(client));
-        PhoneBookAuthenticator phoneBookAuthenticator = new PhoneBookAuthenticator(configuration.getAuthUser(),
-                configuration.getAuthPassword());
+        PhoneBookAuthenticator phoneBookAuthenticator = new PhoneBookAuthenticator(jdbi);
         environment.jersey().register(new BasicAuthProvider<>(phoneBookAuthenticator, "Web Service Realm"));
     }
 }

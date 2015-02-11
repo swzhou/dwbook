@@ -24,14 +24,6 @@ public class DWBookConfiguration extends Configuration {
     @JsonProperty
     private DataSourceFactory database = new DataSourceFactory();
 
-    @JsonProperty
-    @NotEmpty
-    private String authUser;
-
-    @JsonProperty
-    @NotEmpty
-    private String authPassword;
-
     public String getMessage() {
         return message;
     }
@@ -44,11 +36,4 @@ public class DWBookConfiguration extends Configuration {
         return database;
     }
 
-    public String getAuthUser() {
-        return authUser;
-    }
-
-    public String getAuthPassword() {
-        return authPassword;
-    }
 }
