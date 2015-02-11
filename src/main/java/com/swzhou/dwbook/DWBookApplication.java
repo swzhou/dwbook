@@ -1,7 +1,10 @@
 package com.swzhou.dwbook;
 
+import com.sun.jersey.api.client.Client;
+import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -29,6 +32,8 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDatabase(), "mysql");
         environment.jersey().register(new ContactResource(jdbi, environment.getValidator()));
+        final Client client = new JerseyClientBuilder(environment).build("REST Client");
+        environment.jersey().register(new ClientResource(client));
     }
 
     public static void main(String[] args) throws Exception {
