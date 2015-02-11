@@ -1,5 +1,6 @@
 package com.swzhou.dwbook;
 
+import com.google.common.cache.CacheBuilderSpec;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.swzhou.dwbook.dao.UserDAO;
@@ -7,7 +8,9 @@ import com.swzhou.dwbook.representations.User;
 import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
+import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.auth.basic.BasicAuthProvider;
+import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -45,6 +48,8 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         client.addFilter(new HTTPBasicAuthFilter(user.getUsername(), user.getPassword()));
         environment.jersey().register(new ClientResource(client));
         PhoneBookAuthenticator phoneBookAuthenticator = new PhoneBookAuthenticator(jdbi);
-        environment.jersey().register(new BasicAuthProvider<>(phoneBookAuthenticator, "Web Service Realm"));
+        CachingAuthenticator<BasicCredentials, Boolean> authenticator = new CachingAuthenticator<>(environment.metrics(),
+                phoneBookAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=10m"));
+        environment.jersey().register(new BasicAuthProvider<>(authenticator, "Web Service Realm"));
     }
 }
