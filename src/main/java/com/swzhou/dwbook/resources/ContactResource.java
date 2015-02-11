@@ -3,6 +3,7 @@ package com.swzhou.dwbook.resources;
 import com.google.common.base.Supplier;
 import com.swzhou.dwbook.dao.ContactDAO;
 import com.swzhou.dwbook.representations.Contact;
+import io.dropwizard.auth.Auth;
 import org.skife.jdbi.v2.DBI;
 
 import javax.validation.ConstraintViolation;
@@ -33,13 +34,13 @@ public class ContactResource {
 
     @GET
     @Path("/{id}")
-    public Response getContact(@PathParam("id") int id) {
+    public Response getContact(@PathParam("id") int id, @Auth Boolean isAuthenticated) {
         Contact contact = contactDao.getContactById(id);
         return Response.ok(contact).build();
     }
 
     @POST
-    public Response createContact(Contact contact) throws URISyntaxException {
+    public Response createContact(Contact contact, @Auth Boolean isAuthenticated) throws URISyntaxException {
         return validateAndReturn(contact, () -> {
             int newContactId = contactDao.createContact(contact.getFirstName(),
                     contact.getLastName(), contact.getPhone());
@@ -49,14 +50,14 @@ public class ContactResource {
 
     @DELETE
     @Path("/{id}")
-    public Response deleteContact(@PathParam("id") int id) {
+    public Response deleteContact(@PathParam("id") int id, @Auth Boolean isAuthenticated) {
         contactDao.deleteContact(id);
         return Response.noContent().build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response updateContact(@PathParam("id") int id, Contact contact) throws URISyntaxException {
+    public Response updateContact(@PathParam("id") int id, Contact contact, @Auth Boolean isAuthenticated) throws URISyntaxException {
         return validateAndReturn(contact, () -> {
             contactDao.updateContact(id, contact.getFirstName(),
                     contact.getLastName(), contact.getPhone());

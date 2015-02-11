@@ -1,9 +1,11 @@
 package com.swzhou.dwbook;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
+import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -16,7 +18,11 @@ import org.slf4j.LoggerFactory;
  * Created by swzhou on 15/2/9.
  */
 public class DWBookApplication extends Application<DWBookConfiguration> {
-    private static final Logger LOGGER= LoggerFactory.getLogger(DWBookApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DWBookApplication.class);
+
+    public static void main(String[] args) throws Exception {
+        new DWBookApplication().run(args);
+    }
 
     @Override
     public void initialize(Bootstrap<DWBookConfiguration> bootstrap) {
@@ -33,10 +39,10 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         final DBI jdbi = factory.build(environment, configuration.getDatabase(), "mysql");
         environment.jersey().register(new ContactResource(jdbi, environment.getValidator()));
         final Client client = new JerseyClientBuilder(environment).build("REST Client");
+        client.addFilter(new HTTPBasicAuthFilter(configuration.getAuthUser(), configuration.getAuthPassword()));
         environment.jersey().register(new ClientResource(client));
-    }
-
-    public static void main(String[] args) throws Exception {
-        new DWBookApplication().run(args);
+        PhoneBookAuthenticator phoneBookAuthenticator = new PhoneBookAuthenticator(configuration.getAuthUser(),
+                configuration.getAuthPassword());
+        environment.jersey().register(new BasicAuthProvider<>(phoneBookAuthenticator, "Web Service Realm"));
     }
 }
