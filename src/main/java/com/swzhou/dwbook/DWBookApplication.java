@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilderSpec;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.swzhou.dwbook.dao.UserDAO;
+import com.swzhou.dwbook.health.NewContactHealthCheck;
 import com.swzhou.dwbook.representations.User;
 import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
@@ -54,5 +55,6 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
         CachingAuthenticator<BasicCredentials, Boolean> authenticator = new CachingAuthenticator<>(environment.metrics(),
                 phoneBookAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=10m"));
         environment.jersey().register(new BasicAuthProvider<>(authenticator, "Web Service Realm"));
+        environment.healthChecks().register("New Contact health check", new NewContactHealthCheck(client));
     }
 }
