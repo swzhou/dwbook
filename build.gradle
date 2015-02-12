@@ -32,6 +32,8 @@ dependencies {
             'io.dropwizard:dropwizard-auth:' + dropwizardVersion,
             'io.dropwizard:dropwizard-client:' + dropwizardVersion,
             'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-views-mustache:' + dropwizardVersion,
+            'io.dropwizard:dropwizard-assets:' + dropwizardVersion,
             'mysql:mysql-connector-java:5.1.6'
     )
 

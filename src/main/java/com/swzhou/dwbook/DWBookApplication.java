@@ -8,6 +8,7 @@ import com.swzhou.dwbook.representations.User;
 import com.swzhou.dwbook.resources.ClientResource;
 import com.swzhou.dwbook.resources.ContactResource;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.auth.basic.BasicCredentials;
@@ -15,6 +16,7 @@ import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +33,8 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
 
     @Override
     public void initialize(Bootstrap<DWBookConfiguration> bootstrap) {
-
+        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new AssetsBundle());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.swzhou.dwbook.representations.Contact;
+import com.swzhou.dwbook.views.ContactView;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,7 +16,7 @@ import javax.ws.rs.core.Response;
 /**
  * Created by swzhou on 15/2/11.
  */
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.TEXT_HTML)
 @Path("/client/")
 public class ClientResource {
     private Client client;
@@ -26,15 +27,10 @@ public class ClientResource {
 
     @GET
     @Path("showContact")
-    public String showContact(@QueryParam("id") int id) {
+    public ContactView showContact(@QueryParam("id") int id) {
         WebResource contactResource = client.resource("http://localhost:8080/contact/" + id);
         Contact c = contactResource.get(Contact.class);
-        String output = new StringBuilder()
-                .append("ID: ").append(id)
-                .append("\nFirst name: ").append(c.getFirstName())
-                .append("\nLast name: ").append(c.getLastName())
-                .append("\nPhone: ").append(c.getPhone()).toString();
-        return output;
+        return new ContactView(c);
     }
 
     @GET
