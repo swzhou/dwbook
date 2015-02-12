@@ -38,7 +38,9 @@ dependencies {
     )
 
     // test
-    testCompile 'junit:junit:4.11'
+    testCompile(
+            'junit:junit:4.11'
+    )
     compile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
 
 }
