@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="swzhou (generated)" id="1424652523702-1">
+        <createTable catalogName="phonebook" tableName="contact">
+            <column autoIncrement="true" name="id" type="INT(10)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="firstName" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastName" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="swzhou (generated)" id="1424652523702-2">
+        <createTable catalogName="phonebook" tableName="users">
+            <column name="username" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="swzhou (generated)" id="1424652523702-3">
+        <addPrimaryKey catalogName="phonebook" columnNames="username" constraintName="PRIMARY" tableName="users"/>
+    </changeSet>
+</databaseChangeLog>

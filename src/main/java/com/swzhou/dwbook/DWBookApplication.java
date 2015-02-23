@@ -14,7 +14,9 @@ import io.dropwizard.auth.CachingAuthenticator;
 import io.dropwizard.auth.basic.BasicAuthProvider;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.client.JerseyClientBuilder;
+import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -36,6 +38,12 @@ public class DWBookApplication extends Application<DWBookConfiguration> {
     public void initialize(Bootstrap<DWBookConfiguration> bootstrap) {
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new AssetsBundle());
+        bootstrap.addBundle(new MigrationsBundle<DWBookConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(DWBookConfiguration configuration) {
+                return configuration.getDatabase();
+            }
+        });
     }
 
     @Override
